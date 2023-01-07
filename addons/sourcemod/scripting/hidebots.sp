@@ -84,7 +84,6 @@ public void OnPluginStart()
 
 public MRESReturn DHooks_OnUpdateMasterServerPlayers_Pre(Address pThis)
 {
-	PrintToServer("DHooks_OnUpdateMasterServerPlayers_Pre");
 	if (!gH_ConnectedDetour.Enable(Hook_Pre, DHooks_OnClientConnectedCheck_Pre))
 	{
 		SetFailState("Failed to enable detour on CGameClient::IsConnected");
@@ -94,7 +93,6 @@ public MRESReturn DHooks_OnUpdateMasterServerPlayers_Pre(Address pThis)
 
 public MRESReturn DHooks_OnUpdateMasterServerPlayers_Post(Address pThis)
 {
-	PrintToServer("DHooks_OnUpdateMasterServerPlayers_Post");
 	if (!gH_ConnectedDetour.Disable(Hook_Pre, DHooks_OnClientConnectedCheck_Pre))
 	{
 		SetFailState("Failed to enable detour on CGameClient::IsConnected");
@@ -105,9 +103,7 @@ public MRESReturn DHooks_OnUpdateMasterServerPlayers_Post(Address pThis)
 
 public MRESReturn DHooks_OnClientConnectedCheck_Pre(Address pThis, DHookReturn hReturn)
 {
-	PrintToServer("DHooks_OnUpdateMasterServerPlayers_Pre");
 	int client = LoadFromAddress(pThis + view_as<Address>(gI_ClientOffset), NumberType_Int32);
-	PrintToServer("%i", client);
 	if (!IsValidClient(client) || !IsFakeClient(client))
 	{
 		return MRES_Ignored;
@@ -118,7 +114,6 @@ public MRESReturn DHooks_OnClientConnectedCheck_Pre(Address pThis, DHookReturn h
 
 public MRESReturn DHooks_OnGetMasterServerPlayerCounts_Pre(Address pThis, DHookParam hParams)
 {
-	PrintToServer("DHooks_OnGetMasterServerPlayerCounts_Pre");
 	if (!gH_GetNumFakeClientsDetour.Enable(Hook_Pre, DHooks_OnGetNumFakeClients_Pre))
 	{
 		SetFailState("Failed to enable detour on CGameClient::GetNumFakeClients");
@@ -137,12 +132,11 @@ public MRESReturn DHooks_OnGetMasterServerPlayerCounts_Post(Address pThis, DHook
 
 public MRESReturn DHooks_OnGetNumFakeClients_Pre(Address pThis, DHookReturn hReturn)
 {
-	PrintToServer("DHooks_OnGetNumFakeClients_Pre");
 	DHookSetReturn(hReturn, 0);
 	return MRES_Supercede;
 }
 
 stock bool IsValidClient(int client)
 {
-	return client >= 1 && client <= MaxClients && IsClientInGame(client) && !IsClientSourceTV(client);
+	return client >= 1 && client <= MaxClients && IsClientInGame(client);
 }
