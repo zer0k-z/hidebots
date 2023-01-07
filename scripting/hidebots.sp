@@ -14,7 +14,6 @@ public Plugin myinfo =
 	url = "https://github.com/zer0k-z/hidebots"
 };
 
-#include <sourcemod>
 DynamicDetour gH_ConnectedDetour;
 DynamicDetour gH_UpdateMasterServerPlayersDetour;
 
