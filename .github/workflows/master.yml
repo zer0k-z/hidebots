@@ -20,10 +20,11 @@ jobs:
         uses: rumblefrog/setup-sp@master
         with:
           version: "1.11.x"
-          version-file: ./scripting/hidebots.sp
+          version-file: ./addons/sourcemod/scripting/hidebots.sp
 
       - name: Compile plugins
         run: |
+          cd addons/sourcemod
           mkdir plugins
           cd scripting
           spcomp -E -w234 -O2 -v2 -i"include" -o"../plugins/hidebots.smx" hidebots.sp
@@ -43,8 +44,7 @@ jobs:
 
       - name: Zip output
         run: |
-          cd plugins
-          zip -qq -r hidebots-${{ steps.setup_sp.outputs.plugin-version }}.zip hidebots.smx
+          zip -qq -r hidebots-${{ steps.setup_sp.outputs.plugin-version }}.zip .
         working-directory: ${{ env.SCRIPTS_PATH }}
 
       - name: Create Release
@@ -54,7 +54,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: v${{ steps.setup_sp.outputs.plugin-version }}
-          artifacts: "./plugins/hidebots-${{ steps.setup_sp.outputs.plugin-version }}.zip"
+          artifacts: "${{ env.SCRIPTS_PATH }}/hidebots-${{ steps.setup_sp.outputs.plugin-version }}.zip"
           body: ${{ steps.changelog.outputs.changes }}
           draft: false
           allowUpdates: true
