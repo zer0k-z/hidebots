@@ -44,7 +44,7 @@ jobs:
 
       - name: Zip output
         run: |
-          zip -qq -r hidebots-${{ steps.setup_sp.outputs.plugin-version }}.zip .
+          zip -qq -r hidebots-${{ steps.setup_sp.outputs.plugin-version }}.zip addons
         working-directory: ${{ env.SCRIPTS_PATH }}
 
       - name: Create Release
