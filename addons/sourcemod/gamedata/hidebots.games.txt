@@ -4,85 +4,28 @@
 	{
 		"Functions"
 		{
-			"CGameServer::UpdateMasterServerPlayers"
+			"CSteam3Server::NotifyLocalClientConnect"
 			{
-				"signature" "CGameServer::UpdateMasterServerPlayers"
-				"callconv"	"thiscall"
-				"this"		"address"
-				"return"	"void"
-			}
-			"CGameClient::IsConnected"
-			{
-				"signature" "CGameClient::IsConnected"
+				"signature" "CSteam3Server::NotifyLocalClientConnect"
 				"callconv"	"thiscall"
 				"this"		"address"
 				"return"	"bool"
-			}
-			"CGameServer::GetMasterServerPlayerCounts"
-			{
-				"signature" "CGameServer::GetMasterServerPlayerCounts"
-				"callconv"	"thiscall"
-				"this"		"address"
-				"return"	"void"
 				"arguments"
 				{
-					"nHumans"
+					"client"
 					{
-						"type"	"int"
-					}
-					"nMaxHumanSlots"
-					{
-						"type"	"int"
-					}
-					"nBots"
-					{
-						"type"	"int"
+						"type"	"objectptr"
 					}
 				}
-			}
-			"CBaseServer::GetNumFakeClients"
-			{
-				"signature" "CBaseServer::GetNumFakeClients"
-				"callconv"	"thiscall"
-				"this"		"address"
-				"return"	"int"
-			}
-		}
-
-		"Offsets"
-		{
-			"ClientIndexOffset"
-			{
-				"windows"	"112"
-				"linux"		"116"
 			}
 		}
 
 		"Signatures"
 		{
-			"CGameClient::IsConnected"
+			"CSteam3Server::NotifyLocalClientConnect"
 			{
 				"library"	"engine"
-				"windows"	"\x83\xB9\x20\x02\x00\x00\x02"
-				"linux"		"\x55\x89\xE5\x8B\x45\x08\x5D\x83\xB8\x10\x02\x00\x00\x01"
-			}
-			"CGameServer::UpdateMasterServerPlayers"
-			{
-				"library"	"engine"
-				"windows"	"\x55\x8B\xEC\x83\xEC\x10\x83\x3D\x2A\x2A\x2A\x2A\x00\x56"
-				"linux"		"\x55\x89\xE5\x57\x56\x53\x31\xDB\x83\xEC\x3C\x8B\x75\x08"
-			}
-			"CGameServer::GetMasterServerPlayerCounts"
-			{
-				"library"	"engine"
-				"windows"	"\x2A\x2A\x2A\x2A\x2A\x2A\xE8\x2A\x2A\x2A\x2A\x8B\x55\x08\x8B\x0D\x2A\x2A\x2A\x2A"
-				"linux"		"\x55\x89\xE5\x57\x56\x53\x83\xEC\x1C\x8B\x75\x08\x8B\x7D\x10"
-			}
-			"CBaseServer::GetNumFakeClients"
-			{
-				"library"	"engine"
-				"windows"	"\x53\x56\x8B\xD9\x33\xF6\x57\x33\xFF\x39\xB3\x80\x02\x00\x00\x7E\x2A\x8B\x83\x74\x02\x00\x00\x8B\x0C\xB0\x8B\x41\x04\x83\xC1\x04\x8B\x80\x84\x00\x00\x00\xFF\xD0\x84\xC0\x74\x2A\x8B\x83\x74\x02\x00\x00\x8B\x0C\xB0\x8B\x41\x04\x83\xC1\x04\x8B\x80\x90\x00\x00\x00"
-				"linux"		"\x55\x89\xE5\x57\x31\xFF\x56\x53\x83\xEC\x1C\x8B\x75\x08\x8B\x86\x80\x02\x00\x00"
+				"windows"	"\x55\x8B\xEC\x83\xEC\x10\x81\x65\xF4\xFF\xFF\x0F\xFF"
 			}
 		}
 	}
