@@ -1,7 +1,7 @@
 <div align="center">
   <h1><code>hidebots</code></h1>
   <p>
-    <strong>Short Description</strong>
+    <strong>Hide bots from server browser.</strong>
   </p>
   <p style="margin-bottom: 0.5ex;">
     <img
