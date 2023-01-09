@@ -38,23 +38,12 @@ public void OnPluginStart()
 
 	if (gH_GetMasterServerPlayerCountsDetour == INVALID_HANDLE)
 	{
-		SetFailState("Failed to find CGameServer::GetMasterServerPlayerCounts function signature");
+		SetFailState("Failed to find CSteam3Server::NotifyLocalClientConnect function signature");
 	}
 
-	if (!gH_GetMasterServerPlayerCountsDetour.Enable(Hook_Pre, DHooks_OnGetMasterServerPlayerCounts_Pre))
+	if (!gH_NotifyLocalClientConnectDetour.Enable(Hook_Pre, DHooks_OnNotifyLocalClientConnect_Pre))
 	{
-		SetFailState("Failed to enable detour on CGameServer::GetMasterServerPlayerCounts");
-	}
-	if (!gH_GetMasterServerPlayerCountsDetour.Enable(Hook_Post, DHooks_OnGetMasterServerPlayerCounts_Post))
-	{
-		SetFailState("Failed to enable detour on CGameServer::GetMasterServerPlayerCounts");
-	}
-
-	gH_GetNumFakeClientsDetour = DynamicDetour.FromConf(gamedataConf, "CBaseServer::GetNumFakeClients");
-
-	if (gH_GetNumFakeClientsDetour == INVALID_HANDLE)
-	{
-		SetFailState("Failed to find CBaseServer::GetNumFakeClients function signature");
+		SetFailState("Failed to enable detour on CSteam3Server::NotifyLocalClientConnect");
 	}
 	delete gamedataConf;
 }
