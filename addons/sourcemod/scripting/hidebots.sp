@@ -10,11 +10,13 @@ public Plugin myinfo =
 	name = "hidebots",
 	author = "zer0.k",
 	description = "Hide bots from server browser",
-	version = "2.0.0",
+	version = "2.1.0",
 	url = "https://github.com/zer0k-z/hidebots"
 };
 
 DynamicDetour gH_NotifyLocalClientConnectDetour;
+DynamicDetour gH_GetMasterServerPlayerCountsDetour;
+DynamicDetour gH_GetNumFakeClientsDetour;
 
 public void OnPluginStart()
 {
@@ -31,11 +33,59 @@ public void OnPluginStart()
 	{
 		SetFailState("Failed to enable detour on CSteam3Server::NotifyLocalClientConnect");
 	}
+
+	gH_GetMasterServerPlayerCountsDetour = DynamicDetour.FromConf(gamedataConf, "CGameServer::GetMasterServerPlayerCounts");
+
+	if (gH_GetMasterServerPlayerCountsDetour == INVALID_HANDLE)
+	{
+		SetFailState("Failed to find CGameServer::GetMasterServerPlayerCounts function signature");
+	}
+
+	if (!gH_GetMasterServerPlayerCountsDetour.Enable(Hook_Pre, DHooks_OnGetMasterServerPlayerCounts_Pre))
+	{
+		SetFailState("Failed to enable detour on CGameServer::GetMasterServerPlayerCounts");
+	}
+	if (!gH_GetMasterServerPlayerCountsDetour.Enable(Hook_Post, DHooks_OnGetMasterServerPlayerCounts_Post))
+	{
+		SetFailState("Failed to enable detour on CGameServer::GetMasterServerPlayerCounts");
+	}
+
+	gH_GetNumFakeClientsDetour = DynamicDetour.FromConf(gamedataConf, "CBaseServer::GetNumFakeClients");
+
+	if (gH_GetNumFakeClientsDetour == INVALID_HANDLE)
+	{
+		SetFailState("Failed to find CBaseServer::GetNumFakeClients function signature");
+	}
 	delete gamedataConf;
 }
 
 public MRESReturn DHooks_OnNotifyLocalClientConnect_Pre(Address pThis, DHookReturn hReturn, DHookParam hParams)
 {
 	DHookSetReturn(hReturn, false);
+	return MRES_Supercede;
+}
+
+
+public MRESReturn DHooks_OnGetMasterServerPlayerCounts_Pre(Address pThis, DHookParam hParams)
+{
+	if (!gH_GetNumFakeClientsDetour.Enable(Hook_Pre, DHooks_OnGetNumFakeClients_Pre))
+	{
+		SetFailState("Failed to enable detour on CGameClient::GetNumFakeClients");
+	}
+	return MRES_Ignored;
+}
+
+public MRESReturn DHooks_OnGetMasterServerPlayerCounts_Post(Address pThis, DHookParam hParams)
+{
+	if (!gH_GetNumFakeClientsDetour.Disable(Hook_Pre, DHooks_OnGetNumFakeClients_Pre))
+	{
+		SetFailState("Failed to enable detour on CGameClient::GetNumFakeClients");
+	}
+	return MRES_Ignored;
+}
+
+public MRESReturn DHooks_OnGetNumFakeClients_Pre(Address pThis, DHookReturn hReturn)
+{
+	DHookSetReturn(hReturn, 0);
 	return MRES_Supercede;
 }
